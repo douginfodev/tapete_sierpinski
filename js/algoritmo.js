@@ -9,11 +9,11 @@
   var tamanhotapete = [390, 130, 43.3, 14.4, 4.8, 1.6];
   var i = 0;
   var iteracao = 0;
-  var quadrado;
+  var sierpinskiCarpet;
   var colecao = [];
   var posix = 800;
   var posiy = 50;
-  var passo = 1;
+  var passo = 0;
   var flag = true;
   var i = j = k = 0;
   var pxg = 800;
@@ -40,9 +40,9 @@
  
   var background = new Image(); 
 
-   //objeto Square - pseudo-classe
-  var Square = function (posx, posy, tamanho) {
-    this.x = posx,
+   //object carpetSquare - pseudo-class
+  var carpetSquare = function (posx, posy, tamanho) {
+      this.x = posx,
       this.y = posy,
       this.largura = tamanho,
       this.altura = tamanho,
@@ -86,7 +86,7 @@
 
   function start() {
     status = 'start';
-    background.src = "../images/capa.jpg"; //adicionando a imagem    
+    background.src = "../images/capa.jpg";   
 
     background.onload = function () {
       cnv.drawImage(background, 0, 0, background.width, background.height);
@@ -94,12 +94,12 @@
 
 
     if (passo === 0) {
-      quadrado = new Square(800, 50, 390);
-      quadrado.render();
-      colecao.push(quadrado);
+      sierpinskiCarpet = new carpetSquare(800, 50, 390);
+      sierpinskiCarpet.render();
+      colecao.push(sierpinskiCarpet);
     }
 
-    if (passo === 2) {
+    /*if (passo === 2) {
       for (i = 1; i <= 9; i++) {
         TapeteGrupo(posix);
       };
@@ -110,18 +110,18 @@
     if (passo >= 4) {
       //TapeteSierpinski(0);
       Tapete(0);
-    }
+    }*/
 
 
 
 
-    /*quadrado = new Square(200,50,130);
-   quadrado.render();
-   colecao.push(quadrado); 
+    /*sierpinskiCarpet = new carpetSquare(200,50,130);
+   sierpinskiCarpet.render();
+   colecao.push(sierpinskiCarpet); 
    
-    quadrado = new Square(200,50,45);
-   quadrado.render();
-   colecao.push(quadrado); */
+    sierpinskiCarpet = new carpetSquare(200,50,45);
+   sierpinskiCarpet.render();
+   colecao.push(sierpinskiCarpet); */
 
 
   };
@@ -134,9 +134,9 @@
 
     for (i = 1; i <= 9; i++) {
       if (i !== 5) {
-        quadrado = new Square(posix + taminter * (col), posiy + taminter * (lin), taminter);
-        quadrado.render();
-        colecao.push(quadrado);
+        sierpinskiCarpet = new carpetSquare(posix + taminter * (col), posiy + taminter * (lin), taminter);
+        sierpinskiCarpet.render();
+        colecao.push(sierpinskiCarpet);
       }
 
       col += 1;
@@ -163,9 +163,9 @@
 
       if (i !== 4) {
 
-        quadrado = new Square(posix + tamanhotapete[passo] * (col), posiy + tamanhotapete[passo] * (lin), tamanhotapete[passo]);
-        quadrado.render();
-        colecao.push(quadrado);
+        sierpinskiCarpet = new carpetSquare(posix + tamanhotapete[passo] * (col), posiy + tamanhotapete[passo] * (lin), tamanhotapete[passo]);
+        sierpinskiCarpet.render();
+        colecao.push(sierpinskiCarpet);
         totquad += 1;
       }
 
@@ -263,9 +263,9 @@
 
             if (i !== 4) {
 
-              quadrado = new Square(pxg + posix + tamanhotapete[passo] * (col), recy + pyg + posiy + tamanhotapete[passo] * (lin), tamanhotapete[passo]);
-              quadrado.render();
-              colecao.push(quadrado);
+              sierpinskiCarpet = new carpetSquare(pxg + posix + tamanhotapete[passo] * (col), recy + pyg + posiy + tamanhotapete[passo] * (lin), tamanhotapete[passo]);
+              sierpinskiCarpet.render();
+              colecao.push(sierpinskiCarpet);
               totquad += 1;
             }
 
@@ -415,7 +415,7 @@
     }
     //  }
 
-    console.log("total Quadrados " + totquad);
+    console.log("total sierpinskiCarpets " + totquad);
   };
 
 
@@ -436,7 +436,7 @@
     //cnv.drawImage(background, 0, 0, background.width, background.height);
 
     //Iteracao 0
-    cnv.fillStyle = "yellow";
+    cnv.fillStyle = "grey";
     cnv.fillRect(200, 50, 390, 390);
 
     cnv.strokeStyle = "black";

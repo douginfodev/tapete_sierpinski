@@ -1,5 +1,5 @@
 (function () {
-  //variaveis globais
+  //Variables
   var ctx; //context
   var cnv;  //canvas
   var status = null;
@@ -37,42 +37,10 @@
   var totquad = 0;
   var linha = 0;
 
+ 
+  var background = new Image(); 
 
-  //Variaveis do controle do teclado
-  var upKey = 38;
-  var downKey = 40;
-  var leftKey = 37;
-  var rightKey = 39;
-  var TECLAW = 87;
-  var TECLAS = 83;
-
-  //keycode.info // site de teclas
-
-  var tecla = []; //vetor da teclas
-  var x = 0;
-  var y = 0;
-  var vh = 0;
-
-  //background do jogo
-  var background = new Image(); //Criar o objeto imagem
-
-  //Objeto Player 1
-  var player1 = {
-    x: null,
-    y: null,
-    largura: 25,
-    altura: 150,
-    póntos: null,
-    img: new Image(),
-    render: function () {
-      cnv.drawImage(player1.img, player1.x, player1.y, player1.largura, player1.altura);
-    },
-    move: function (vel) {
-      this.y += vel;
-    }
-  };
-
-  //objeto rain - pseudo-classe
+   //objeto Square - pseudo-classe
   var Square = function (posx, posy, tamanho) {
     this.x = posx,
       this.y = posy,
@@ -102,7 +70,7 @@
       };
   };
 
-  //Onliad da Pagina
+  //Onload da Pagina
   window.onload = init();
 
   function init() {
@@ -112,7 +80,7 @@
       cnv = ctx.getContext('2d');
       start();
     }else
-      alert('Não foi possível carregar o canvas');
+      alert('Impossible to load canvas');
 
   };
 

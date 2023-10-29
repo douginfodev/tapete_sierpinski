@@ -7,12 +7,12 @@
   //Initial Fractal Setup
   var iteration = 0;
   var tamanho = 390;
-  var tamanhotapete = [390, 130, 43.3, 14.4, 4.8, 1.6];
+  var carpetWidth = [390, 130, 43.3, 14.4, 4.8, 1.6];
   var i = 0;
   var iteracao = 0;
   var sierpinskiCarpet;
-  var colecao = [];
-  var posix = 800;
+  var colectionCarpet = [];
+  var posix = 200;
   var posiy = 50;
   var passo = 0;
   var flag = true;
@@ -38,38 +38,25 @@
   var totquad = 0;
   var linha = 0;
 
- 
-  var background = new Image(); 
+  var background = new Image();
 
-   //object carpetSquare - pseudo-class
-  var carpetSquare = function (posx, posy, tamanho) {
-      this.x = posx,
-      this.y = posy,
-      this.largura = tamanho,
-      this.altura = tamanho,
+  //object carpetSquare - pseudo-class
+  var carpetSquare = function (positionx, positiony, widthsquare) {
+      this.positionX = positionx,
+      this.positionY = positiony,
+      this.width = widthsquare,
+      this.height = widthsquare,
       this.render = function () {
-
-        if (passo === 1) {
-          //cnv.fillStyle = "yellow";
-        }
-        //cnv.fillStyle = "gray";
-        //cnv.fillRect(this.x,this.y,this.largura,this.altura);
-        //cnv.strokeStyle = "white";
-        //cnv.strokeRect(this.x,this.y,this.largura,this.altura); 
-
-        //gradiente
-        var gradient = cnv.createLinearGradient(0, 0, 170, 0);
-        gradient.addColorStop("0", "magenta");
-        gradient.addColorStop("0.5", "blue");
-        gradient.addColorStop("1.0", "red");
-
-        // Fill with gradient
-        cnv.strokeStyle = gradient;
-        cnv.lineWidth = 5;
-        cnv.strokeRect(this.x, this.y, this.largura, this.altura);
-
+        cnv.fillStyle = "gray";
+        cnv.fillRect(this.positionX, this.positionY, this.widthsquare, this.widthsquare);
+        
+        cnv.lineWidth = 2;
+        cnv.strokeStyle = "#7bbefc";
+        cnv.strokeRect(this.positionX, this.positionY, this.widthsquare, this.widthsquare);
       };
   };
+
+  
 
   //Onload da Pagina
   window.onload = init();
@@ -80,24 +67,24 @@
     if (ctx !== null) {
       cnv = ctx.getContext('2d');
       start();
-    }else
+    } else
       alert('Impossible to load canvas');
-
   };
 
   function start() {
     status = 'start';
-    background.src = "../images/capa.jpg";   
+    background.src = "../images/fundo_sieski.jpg";
 
     background.onload = function () {
       cnv.drawImage(background, 0, 0, background.width, background.height);
     };
 
 
-    if (passo === 0) {
-      sierpinskiCarpet = new carpetSquare(800, 50, 390);
+    if (iteration === 0) {
+      console.log('Entrei 1');
+      sierpinskiCarpet = new carpetSquare(200, 10, 390);
       sierpinskiCarpet.render();
-      colecao.push(sierpinskiCarpet);
+      colectionCarpet.push(sierpinskiCarpet);
     }
 
     /*if (passo === 2) {
@@ -428,14 +415,14 @@
 
   //========= Desenha os elementos na tela ===============
   function draw() {
-    cnv.fillStyle = "gray";
-    cnv.fillRect(200, 50, 390, 390);
+   // cnv.fillStyle = "gray";
+   // cnv.fillRect(200, 12, 390, 390);
 
     cnv.lineWidth = 2;
-    cnv.strokeStyle = "lime";
-    cnv.strokeRect(200, 50, 390, 390);
-    
+    cnv.strokeStyle = "#7bbefc";
+    cnv.strokeRect(200, 12, 390, 390);
 
+    
 
     //iteracao 1  
     /*cnv.fillStyle = "white"; 
@@ -506,10 +493,10 @@
     }*/
 
     ///renderiza todas as chuvas
-    for (var c in colecao) {
-      var auxchu = colecao[c];
-      //cnv.fillStyle = "white";  
-      auxchu.render();
+    for (var c in colectionCarpet) {
+      var pieceCarpet = colectionCarpet[c];
+      cnv.fillStyle = "white";  
+      pieceCarpet.render();
 
 
     }
@@ -586,7 +573,7 @@
   }
 
   //Recursividade
-  if (status === 'start1') {
+  if (status === 'start') {
     loop();
   };
 }());

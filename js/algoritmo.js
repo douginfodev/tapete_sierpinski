@@ -4,7 +4,8 @@
   var cnv;  //canvas
   var status = null;
 
-  //Fractal
+  //Initial Fractal Setup
+  var iteration = 0;
   var tamanho = 390;
   var tamanhotapete = [390, 130, 43.3, 14.4, 4.8, 1.6];
   var i = 0;
@@ -427,24 +428,17 @@
 
   //========= Desenha os elementos na tela ===============
   function draw() {
-    //cnv.fillStyle = "gray";
-    //cnv.fillRect(0,0,1980,300);
-
-    //cnv.fillStyle = "lime";
-    //cnv.fillRect(0,250,1980,200);
-    //Desenha o background de fundo
-    //cnv.drawImage(background, 0, 0, background.width, background.height);
-
-    //Iteracao 0
-    cnv.fillStyle = "grey";
+    cnv.fillStyle = "gray";
     cnv.fillRect(200, 50, 390, 390);
 
-    cnv.strokeStyle = "black";
-    cnv.strokeRect(800, 50, 390, 390);
+    cnv.lineWidth = 2;
+    cnv.strokeStyle = "lime";
+    cnv.strokeRect(200, 50, 390, 390);
+    
 
 
     //iteracao 1  
-    //cnv.fillStyle = "white"; 
+    /*cnv.fillStyle = "white"; 
     cnv.clearRect(200 + tamanhotapete[1], 50 + tamanhotapete[1], tamanhotapete[1], tamanhotapete[1]);
 
     //iteracao 2  
@@ -592,7 +586,7 @@
   }
 
   //Recursividade
-  if (status === 'start') {
+  if (status === 'start1') {
     loop();
   };
 }());

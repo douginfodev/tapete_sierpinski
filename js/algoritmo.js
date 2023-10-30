@@ -66,7 +66,7 @@
       };
   };
 
-  function carpetMaster(originX) {
+  function carpetMaster(originX,actualIteration) {
     var lin = 0;
     var column = 0;
     var initColumnPos = 0;
@@ -78,7 +78,7 @@
       initColumnPos = originX + (column * carpetWidth[iteracao]);
 
       if (squareLine !== 5) {
-        sierpinskiCarpet = new carpetSquare(initColumnPos, posiy + (carpetWidth[iteracao] * lin), carpetWidth[iteracao]);
+        sierpinskiCarpet = new carpetSquare(initColumnPos, posiy + (carpetWidth[iteracao] * lin), carpetWidth[actualIteration]);
         sierpinskiCarpet.render();
         colectionCarpet.push(sierpinskiCarpet);
         //console.log(squareLine);
@@ -119,13 +119,12 @@
 
 
     if (iteration === 0) {
-      sierpinskiCarpet = new carpetSquare(originX, originY, squareWidth);
+      sierpinskiCarpet = new carpetSquare(originX, originY, squareWidth,squareWidth);
       sierpinskiCarpet.render();
       colectionCarpet.push(sierpinskiCarpet);
-    }
-
-    if (iteration === 2) {
-      carpetMaster(200);
+    }else{
+      carpetMaster(200,iteration);
+    };  
 
 
       /*sierpinskiCarpet = new carpetSquare(originX,originY, squareWidth);
@@ -134,7 +133,7 @@
       colectionCarpet.push(sierpinskiCarpet);
   */
       //console.log(colectionCarpet);
-    }
+    //}
 
 
 

@@ -6,12 +6,13 @@
 
   //Initial Fractal Setup
   var carpetWidth = [390, 130, 43.3, 14.4, 4.8, 1.6];
-  var iteration = 2;
+  var iteration = 3;
   var squareWidth = carpetWidth[iteration];
   var defaultLineWidth = 1.5;
   //console.log(carpetWidth[1]);
   var originX = 200;
   var originY = 12;
+  var rowLine = 0;
 
   var i = 0;
   var iteracao = 1;
@@ -66,31 +67,31 @@
       };
   };
 
-  function carpetMaster(originX,actualIteration) {
-    var lin = 0;
+  function carpetMaster(originX, originY, actualIteration, actualrow) {
+    var rowLine = actualrow;
     var column = 0;
     var initColumnPos = 0;
-    //var taminter = tamanhotapete[0] / Math.pow(3, passo);
-    //posix = posicao;
+    var initRowPos = originY;
 
     for (squareLine = 1; squareLine <= 9; squareLine++) {
 
-      initColumnPos = originX + (column * carpetWidth[iteracao]);
+      initColumnPos = originX + (column * carpetWidth[actualIteration]);
 
       if (squareLine !== 5) {
-        sierpinskiCarpet = new carpetSquare(initColumnPos, posiy + (carpetWidth[iteracao] * lin), carpetWidth[actualIteration]);
+        sierpinskiCarpet = new carpetSquare(initColumnPos, initRowPos, carpetWidth[actualIteration]);
         sierpinskiCarpet.render();
         colectionCarpet.push(sierpinskiCarpet);
-        //console.log(squareLine);
+        //console.log('Line= ' + squareLine + ' PosX= ' + initColumnPos + ' PosY= ' + initRowPos);
       }
 
       column += 1;
 
-      console.log(initColumnPos);
       if (squareLine === 3 || squareLine === 6 || squareLine === 9) {
-        lin += 1;
         column = 0;
         initColumnPos = 0;
+        initRowPos = originY + (rowLine * carpetWidth[actualIteration]);
+        rowLine += 1;
+        //console.log(initRowPos);
       }
 
     }
@@ -119,41 +120,48 @@
 
 
     if (iteration === 0) {
-      sierpinskiCarpet = new carpetSquare(originX, originY, squareWidth,squareWidth);
+      sierpinskiCarpet = new carpetSquare(originX, originY, squareWidth, squareWidth);
       sierpinskiCarpet.render();
       colectionCarpet.push(sierpinskiCarpet);
-    }else{
-      carpetMaster(200,iteration);
-    };  
+    } else {
+      carpetInvisible = 4;
+      recursive = 0;
+      totalRecursion = (3 ** iteration);
+      //totalRecursion = 9;
+
+      if (iteration <= 1)
+        totalRecursion = 0;
+
+      rowLine = 1;
+      recursivePositionX = originX;
+      recursivePositionY = originY;
+
+      //Recursion
+      while (recursive < totalRecursion) {
+
+        //Verify Invisible Carpet Square
+        if (recursive !== carpetInvisible) {
+          carpetMaster(recursivePositionX, recursivePositionY, iteration, rowLine);
+        } else {
+          console.log(recursive);
+          carpetInvisible += 9;
+        }
+
+        recursive += 1;
+        recursivePositionX += carpetWidth[iteration - 1];
+
+        //Initial column value
+        if (recursive % 3 === 0) {
+          recursivePositionY = originY + (carpetWidth[iteration - 1] * rowLine);
+          recursivePositionX = originX;
+        }
+
+        if (recursive % 6 === 0)
+          recursivePositionY = originY + (carpetWidth[iteration - 1] * (rowLine + 1));
 
 
-      /*sierpinskiCarpet = new carpetSquare(originX,originY, squareWidth);
-      sierpinskiCarpet.render();
-      cnv.strokeStyle = "yellow";
-      colectionCarpet.push(sierpinskiCarpet);
-  */
-      //console.log(colectionCarpet);
-    //}
-
-
-
-    if (passo >= 4) {
-      //TapeteSierpinski(0);
-      Tapete(0);
-    }
-
-
-
-
-    /*sierpinskiCarpet = new carpetSquare(200,50,130);
-   sierpinskiCarpet.render();
-   colecao.push(sierpinskiCarpet); 
-   
-    sierpinskiCarpet = new carpetSquare(200,50,45);
-   sierpinskiCarpet.render();
-   colecao.push(sierpinskiCarpet); */
-
-
+      };
+    };
   };
 
   function TapeteGrupo(posicao) {
@@ -178,8 +186,6 @@
 
     }
   };
-
-
 
   function Tapete(loop) {
 
@@ -448,18 +454,19 @@
     console.log("total sierpinskiCarpets " + totquad);
   };
 
-
-  //============= UPDATE ================
+  //UPDATE
   function update() {
     draw();
   }
 
-
-  //========= Desenha os elementos na tela ===============
+  //DRAW CANVAS
   function draw() {
     cnv.clearRect(0, 0, 700, 450);
 
     cnv.drawImage(background, 0, 0, background.width, background.height);
+
+    cnv.strokeStyle = "yellow";
+    cnv.strokeRect(originX, originY, 390, 390);
 
     for (var c in colectionCarpet) {
       var pieceCarpet = colectionCarpet[c];
@@ -467,145 +474,16 @@
       pieceCarpet.render();
       //console.log(pieceCarpet);
     }
-
-    /*iteracao 2  
-    cnv.fillStyle = "red";
-    cnv.fillRect(200 + tamanhotapete[2] * 1, 50 + tamanhotapete[2] * 1, tamanhotapete[2], tamanhotapete[2]);
-    cnv.fillRect(200 + tamanhotapete[2] * 4, 50 + tamanhotapete[2] * 1, tamanhotapete[2], tamanhotapete[2]);
-    cnv.fillRect(200 + tamanhotapete[2] * 7, 50 + tamanhotapete[2] * 1, tamanhotapete[2], tamanhotapete[2]);
-
-    cnv.fillRect(200 + tamanhotapete[2] * 1, 50 + tamanhotapete[2] * 4, tamanhotapete[2], tamanhotapete[2]);
-    //cnv.fillRect(200+tamanhotapete[2]*4,50+tamanhotapete[2]*1,tamanhotapete[2],tamanhotapete[2]);
-    cnv.fillRect(200 + tamanhotapete[2] * 7, 50 + tamanhotapete[2] * 4, tamanhotapete[2], tamanhotapete[2]);
-
-    cnv.fillRect(200 + tamanhotapete[2] * 1, 50 + tamanhotapete[2] * 7, tamanhotapete[2], tamanhotapete[2]);
-    cnv.fillRect(200 + tamanhotapete[2] * 4, 50 + tamanhotapete[2] * 7, tamanhotapete[2], tamanhotapete[2]);
-    cnv.fillRect(200 + tamanhotapete[2] * 7, 50 + tamanhotapete[2] * 7, tamanhotapete[2], tamanhotapete[2]);
-
-
-    //iteracao 3  
-    cnv.fillStyle = "green";
-    cnv.fillRect(200 + tamanhotapete[3] * 1, 50 + tamanhotapete[3] * 1, tamanhotapete[3], tamanhotapete[3]);
-    cnv.fillRect(200 + tamanhotapete[3] * 4, 50 + tamanhotapete[3] * 1, tamanhotapete[3], tamanhotapete[3]);
-    cnv.fillRect(200 + tamanhotapete[3] * 7, 50 + tamanhotapete[3] * 1, tamanhotapete[3], tamanhotapete[3]);
-
-    cnv.fillRect(200 + tamanhotapete[3] * 1, 50 + tamanhotapete[3] * 4, tamanhotapete[3], tamanhotapete[3]);
-    //cnv.fillRect(200+tamanhotapete[2]*4,50+tamanhotapete[2]*1,tamanhotapete[2],tamanhotapete[2]);
-    cnv.fillRect(200 + tamanhotapete[3] * 7, 50 + tamanhotapete[3] * 4, tamanhotapete[3], tamanhotapete[3]);
-
-    cnv.fillRect(200 + tamanhotapete[3] * 1, 50 + tamanhotapete[3] * 7, tamanhotapete[3], tamanhotapete[3]);
-    cnv.fillRect(200 + tamanhotapete[3] * 4, 50 + tamanhotapete[3] * 7, tamanhotapete[3], tamanhotapete[3]);
-    cnv.fillRect(200 + tamanhotapete[3] * 7, 50 + tamanhotapete[3] * 7, tamanhotapete[3], tamanhotapete[3]);
-
-
-    //iteracao 4  
-    cnv.fillStyle = "blue";
-    cnv.fillRect(200 + tamanhotapete[4] * 1, 50 + tamanhotapete[4] * 1, tamanhotapete[4], tamanhotapete[4]);
-    cnv.fillRect(200 + tamanhotapete[4] * 4, 50 + tamanhotapete[4] * 1, tamanhotapete[4], tamanhotapete[4]);
-    cnv.fillRect(200 + tamanhotapete[4] * 7, 50 + tamanhotapete[4] * 1, tamanhotapete[4], tamanhotapete[4]);
-
-    cnv.fillRect(200 + tamanhotapete[4] * 1, 50 + tamanhotapete[4] * 4, tamanhotapete[4], tamanhotapete[4]);
-    //cnv.fillRect(200+tamanhotapete[2]*4,50+tamanhotapete[2]*1,tamanhotapete[2],tamanhotapete[2]);
-    cnv.fillRect(200 + tamanhotapete[4] * 7, 50 + tamanhotapete[4] * 4, tamanhotapete[4], tamanhotapete[4]);
-
-    cnv.fillRect(200 + tamanhotapete[4] * 1, 50 + tamanhotapete[4] * 7, tamanhotapete[4], tamanhotapete[4]);
-    cnv.fillRect(200 + tamanhotapete[4] * 4, 50 + tamanhotapete[4] * 7, tamanhotapete[4], tamanhotapete[4]);
-    cnv.fillRect(200 + tamanhotapete[4] * 7, 50 + tamanhotapete[4] * 7, tamanhotapete[4], tamanhotapete[4]);
-
-    //iteracao 5  
-    cnv.fillStyle = "black";
-    cnv.fillRect(200 + tamanhotapete[5] * 1, 50 + tamanhotapete[5] * 1, tamanhotapete[5], tamanhotapete[5]);
-    cnv.fillRect(200 + tamanhotapete[5] * 4, 50 + tamanhotapete[5] * 1, tamanhotapete[5], tamanhotapete[5]);
-    cnv.fillRect(200 + tamanhotapete[5] * 7, 50 + tamanhotapete[5] * 1, tamanhotapete[5], tamanhotapete[5]);
-
-    cnv.fillRect(200 + tamanhotapete[5] * 1, 50 + tamanhotapete[5] * 4, tamanhotapete[5], tamanhotapete[5]);
-    //cnv.fillRect(200+tamanhotapete[2]*4,50+tamanhotapete[2]*1,tamanhotapete[2],tamanhotapete[2]);
-    cnv.fillRect(200 + tamanhotapete[5] * 7, 50 + tamanhotapete[5] * 4, tamanhotapete[5], tamanhotapete[5]);
-
-    cnv.fillRect(200 + tamanhotapete[5] * 1, 50 + tamanhotapete[5] * 7, tamanhotapete[5], tamanhotapete[5]);
-    cnv.fillRect(200 + tamanhotapete[5] * 4, 50 + tamanhotapete[5] * 7, tamanhotapete[5], tamanhotapete[5]);
-    cnv.fillRect(200 + tamanhotapete[5] * 7, 50 + tamanhotapete[5] * 7, tamanhotapete[5], tamanhotapete[5]);
-
-    //Iteracao 0
-    /*if (passo === 0 || passo === 2){  
-      cnv.fillStyle = "yellow"; 
-      cnv.fillRect(800,50,390,390);
-    }*/
-
-
-
-
-
-    /*iteracao 1  
-    //cnv.fillStyle = "white"; 
-    if (passo === 1){ 
-        var lin = 0;
-        var col = 0;
-     for(i=0;i<=8;i++){   
-      cnv.fillStyle = "yellow"; 
-      cnv.strokeStyle = "black";
-        if(i !== 4){
-         cnv.fillRect(posix+tamanhotapete[passo]*(col),posiy+tamanhotapete[passo]*(lin),tamanhotapete[passo],tamanhotapete[passo]);
-         cnv.strokeRect(posix+tamanhotapete[passo]*(col),posiy+tamanhotapete[passo]*(lin),tamanhotapete[passo],tamanhotapete[passo]);
-     
-         }
-         
-         col += 1;
-         
-         if (i === 2 || i === 5 || i === 8 ){
-             lin += 1; 
-             col = 0;
-         }
-         
-       }
-     }//end passo 1
-     
-      if (passo === 2){ 
-       for(j=0;j<=8;j++){   
-          if(j === 1 && flag === true){
-             posix = posix + (tamanhotapete[passo]*3);
-             flag = false;
-   
-          }
-          
-        var lin = 0;
-        var col = 0;
-        console.log("j - "+j);
-     for(i=0;i<=8;i++){   
-      cnv.fillStyle = "yellow"; 
-       cnv.strokeStyle = "black";
-        if(i !== 4){
-         cnv.fillRect(posix+tamanhotapete[passo]*(col),posiy+tamanhotapete[passo]*(lin),tamanhotapete[passo],tamanhotapete[passo]);
-         cnv.strokeRect(posix+tamanhotapete[passo]*(col),posiy+tamanhotapete[passo]*(lin),tamanhotapete[passo],tamanhotapete[passo]);
-       
-        }
-         
-         col += 1;
-         
-         if (i === 2 || i === 5 || i === 8 ){
-             lin += 1; 
-             col = 0;
-         }
-         
-       }
-     }
-     
-      }*/
-    //   cnv.save();
-    //cnv.fillStyle = "green";   
-    //cnv.fillRect(800+130,50,130,130);
-    //cnv.restore();
   };
 
-
-  //============ Recursividade / loop ================
+  //RECURSIVE / LOOP 
   function loop() {
     update();
     draw();
     requestAnimationFrame(loop, ctx);
   }
 
-  //Recursividade
+  //START
   if (status === 'start') {
     loop();
   };

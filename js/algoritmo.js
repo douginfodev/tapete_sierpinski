@@ -5,16 +5,26 @@
   var status = null;
 
   //Initial Fractal Setup
-  var iteration = 0;
-  var tamanho = 390;
   var carpetWidth = [390, 130, 43.3, 14.4, 4.8, 1.6];
+  var iteration = 2;
+  var squareWidth = carpetWidth[iteration];
+  var defaultLineWidth = 1.5;
+  //console.log(carpetWidth[1]);
+  var originX = 200;
+  var originY = 12;
+
   var i = 0;
-  var iteracao = 0;
+  var iteracao = 1;
   var sierpinskiCarpet;
   var colectionCarpet = [];
+
+
+
+
+
   var posix = 200;
-  var posiy = 50;
-  var passo = 0;
+  var posiy = 12;
+  var passo = 1;
   var flag = true;
   var i = j = k = 0;
   var pxg = 800;
@@ -42,21 +52,49 @@
 
   //object carpetSquare - pseudo-class
   var carpetSquare = function (positionx, positiony, widthsquare) {
-      this.positionX = positionx,
+    this.positionX = positionx,
       this.positionY = positiony,
       this.width = widthsquare,
       this.height = widthsquare,
       this.render = function () {
-        cnv.fillStyle = "gray";
-        cnv.fillRect(this.positionX, this.positionY, this.widthsquare, this.widthsquare);
-        
-        cnv.lineWidth = 2;
-        cnv.strokeStyle = "#7bbefc";
-        cnv.strokeRect(this.positionX, this.positionY, this.widthsquare, this.widthsquare);
+        cnv.fillStyle = "#1957A3";
+        cnv.fillRect(this.positionX, this.positionY, this.width, this.height);
+
+        cnv.lineWidth = defaultLineWidth;
+        cnv.strokeStyle = "white";//"#7bbefc";
+        cnv.strokeRect(this.positionX, this.positionY, this.width, this.height);
       };
   };
 
-  
+  function carpetMaster(originX) {
+    var lin = 0;
+    var column = 0;
+    var initColumnPos = 0;
+    //var taminter = tamanhotapete[0] / Math.pow(3, passo);
+    //posix = posicao;
+
+    for (squareLine = 1; squareLine <= 9; squareLine++) {
+
+      initColumnPos = originX + (column * carpetWidth[iteracao]);
+
+      if (squareLine !== 5) {
+        sierpinskiCarpet = new carpetSquare(initColumnPos, posiy + (carpetWidth[iteracao] * lin), carpetWidth[iteracao]);
+        sierpinskiCarpet.render();
+        colectionCarpet.push(sierpinskiCarpet);
+        //console.log(squareLine);
+      }
+
+      column += 1;
+
+      console.log(initColumnPos);
+      if (squareLine === 3 || squareLine === 6 || squareLine === 9) {
+        lin += 1;
+        column = 0;
+        initColumnPos = 0;
+      }
+
+    }
+  }
 
   //Onload da Pagina
   window.onload = init();
@@ -81,24 +119,29 @@
 
 
     if (iteration === 0) {
-      console.log('Entrei 1');
-      sierpinskiCarpet = new carpetSquare(200, 10, 390);
+      sierpinskiCarpet = new carpetSquare(originX, originY, squareWidth);
       sierpinskiCarpet.render();
       colectionCarpet.push(sierpinskiCarpet);
     }
 
-    /*if (passo === 2) {
-      for (i = 1; i <= 9; i++) {
-        TapeteGrupo(posix);
-      };
-    } //end passo 1
+    if (iteration === 2) {
+      carpetMaster(200);
+
+
+      /*sierpinskiCarpet = new carpetSquare(originX,originY, squareWidth);
+      sierpinskiCarpet.render();
+      cnv.strokeStyle = "yellow";
+      colectionCarpet.push(sierpinskiCarpet);
+  */
+      //console.log(colectionCarpet);
+    }
 
 
 
     if (passo >= 4) {
       //TapeteSierpinski(0);
       Tapete(0);
-    }*/
+    }
 
 
 
@@ -415,20 +458,18 @@
 
   //========= Desenha os elementos na tela ===============
   function draw() {
-   // cnv.fillStyle = "gray";
-   // cnv.fillRect(200, 12, 390, 390);
+    cnv.clearRect(0, 0, 700, 450);
 
-    cnv.lineWidth = 2;
-    cnv.strokeStyle = "#7bbefc";
-    cnv.strokeRect(200, 12, 390, 390);
+    cnv.drawImage(background, 0, 0, background.width, background.height);
 
-    
+    for (var c in colectionCarpet) {
+      var pieceCarpet = colectionCarpet[c];
+      cnv.fillStyle = "white";
+      pieceCarpet.render();
+      //console.log(pieceCarpet);
+    }
 
-    //iteracao 1  
-    /*cnv.fillStyle = "white"; 
-    cnv.clearRect(200 + tamanhotapete[1], 50 + tamanhotapete[1], tamanhotapete[1], tamanhotapete[1]);
-
-    //iteracao 2  
+    /*iteracao 2  
     cnv.fillStyle = "red";
     cnv.fillRect(200 + tamanhotapete[2] * 1, 50 + tamanhotapete[2] * 1, tamanhotapete[2], tamanhotapete[2]);
     cnv.fillRect(200 + tamanhotapete[2] * 4, 50 + tamanhotapete[2] * 1, tamanhotapete[2], tamanhotapete[2]);
@@ -492,14 +533,7 @@
       cnv.fillRect(800,50,390,390);
     }*/
 
-    ///renderiza todas as chuvas
-    for (var c in colectionCarpet) {
-      var pieceCarpet = colectionCarpet[c];
-      cnv.fillStyle = "white";  
-      pieceCarpet.render();
 
-
-    }
 
 
 

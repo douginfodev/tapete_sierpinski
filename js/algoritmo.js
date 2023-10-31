@@ -6,49 +6,19 @@
 
   //Initial Fractal Setup
   var carpetWidth = [390, 130, 43.3, 14.4, 4.8, 1.6];
-  var iteration = 3;
+  var iteration = 4;
   var squareWidth = carpetWidth[iteration];
-  var defaultLineWidth = 1.5;
-  //console.log(carpetWidth[1]);
+  var defaultLineWidth = 1.0;
   var originX = 200;
   var originY = 12;
-  var rowLine = 0;
+  var rowLine = 1;
+  var arrayCarpetX = [200, 330, 460, 200, 330, 460, 200, 330, 460];
+  var arrayCarpetY = [12, 12, 12, 142, 142, 142, 271, 271, 271];
+  var arrayRecursive = [0, 1, 1, 9, 9];
 
   var i = 0;
-  var iteracao = 1;
   var sierpinskiCarpet;
   var colectionCarpet = [];
-
-
-
-
-
-  var posix = 200;
-  var posiy = 12;
-  var passo = 1;
-  var flag = true;
-  var i = j = k = 0;
-  var pxg = 800;
-  var pyg = 800;
-  var recx = 0;
-  var recy = 0;
-  var contquad = contquady = 0;
-  var total = Math.pow(9, (passo - 1));
-  var a = ln = 0;
-  var contite = 0;
-  var lin = col = 0;
-  var coluna = 0;
-  var linha = 1;
-  var col2 = 5;
-  var col3 = 8;
-
-  if (passo >= 3) {
-    total = (total - 9);
-  }
-  var auxk = 27;
-  var totquad = 0;
-  var linha = 0;
-
   var background = new Image();
 
   //object carpetSquare - pseudo-class
@@ -81,7 +51,7 @@
         sierpinskiCarpet = new carpetSquare(initColumnPos, initRowPos, carpetWidth[actualIteration]);
         sierpinskiCarpet.render();
         colectionCarpet.push(sierpinskiCarpet);
-        //console.log('Line= ' + squareLine + ' PosX= ' + initColumnPos + ' PosY= ' + initRowPos);
+        console.log('Line= ' + squareLine + ' PosX= ' + initColumnPos + ' PosY= ' + initRowPos);
       }
 
       column += 1;
@@ -93,6 +63,8 @@
         rowLine += 1;
         //console.log(initRowPos);
       }
+
+
 
     }
   }
@@ -123,43 +95,65 @@
       sierpinskiCarpet = new carpetSquare(originX, originY, squareWidth, squareWidth);
       sierpinskiCarpet.render();
       colectionCarpet.push(sierpinskiCarpet);
+    } else if (iteration === 1) {
+      carpetMaster(originX, originY, iteration, rowLine);
     } else {
-      carpetInvisible = 4;
-      recursive = 0;
-      totalRecursion = (3 ** iteration);
-      //totalRecursion = 9;
+      var i = 0;
+      var matrizCarpet = 0;
 
-      if (iteration <= 1)
-        totalRecursion = 0;
 
-      rowLine = 1;
-      recursivePositionX = originX;
-      recursivePositionY = originY;
 
-      //Recursion
-      while (recursive < totalRecursion) {
+      for (i = 0; i < arrayRecursive[iteration]; i++) {
 
-        //Verify Invisible Carpet Square
-        if (recursive !== carpetInvisible) {
-          carpetMaster(recursivePositionX, recursivePositionY, iteration, rowLine);
-        } else {
-          console.log(recursive);
-          carpetInvisible += 9;
-        }
+        if (i !== 4) {
+          originX = arrayCarpetX[i];
+          originY = arrayCarpetY[i];
 
-        recursive += 1;
-        recursivePositionX += carpetWidth[iteration - 1];
+          carpetInvisible = 4;
+          recursive = 0;
 
-        //Initial column value
-        if (recursive % 3 === 0) {
-          recursivePositionY = originY + (carpetWidth[iteration - 1] * rowLine);
+          //totalRecursion = (3 ** iteration);
+          totalRecursion = 9;
+
+          if (iteration <= 1)
+            totalRecursion = 0;
+
+          rowLine = 1;
           recursivePositionX = originX;
-        }
+          recursivePositionY = originY;
 
-        if (recursive % 6 === 0)
-          recursivePositionY = originY + (carpetWidth[iteration - 1] * (rowLine + 1));
+          //Recursion
+          while (recursive < totalRecursion) {
 
+            //Verify Invisible Carpet Square
+            if (recursive !== carpetInvisible) {
+              carpetMaster(recursivePositionX, recursivePositionY, iteration, rowLine);
+            } else {
+              console.log(recursive);
+              carpetInvisible += 9;
+            }
 
+            recursive += 1;
+            recursivePositionX += carpetWidth[iteration - 1];
+
+            //Initial column value
+            if (recursive % 3 === 0) {
+              recursivePositionY = originY + (carpetWidth[iteration - 1] * rowLine);
+              recursivePositionX = originX;
+            }
+
+            if (recursive % 6 === 0)
+              recursivePositionY = originY + (carpetWidth[iteration - 1] * (rowLine + 1));
+
+            if (recursive % 9 === 0) {
+              recursivePositionX = originX + (carpetWidth[iteration - 1] + 14.4);
+              recursivePositionY = originY + (carpetWidth[iteration - 1] * rowLine);
+
+            }
+            console.log("RECURSIVE= " + recursive + "==========================================");
+
+          };
+        };
       };
     };
   };
@@ -466,7 +460,7 @@
     cnv.drawImage(background, 0, 0, background.width, background.height);
 
     cnv.strokeStyle = "yellow";
-    cnv.strokeRect(originX, originY, 390, 390);
+    cnv.strokeRect(200, 12, 390, 390);
 
     for (var c in colectionCarpet) {
       var pieceCarpet = colectionCarpet[c];

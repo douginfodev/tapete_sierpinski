@@ -12,9 +12,10 @@
   var originX = 200;
   var originY = 12;
   var rowLine = 1;
+  var carpetColors = ["#E4F1BD","#1957A3","#1993A3","#9119A3","#E29A26"];
   var arrayCarpetX = [200, 330, 460, 200, 330, 460, 200, 330, 460];
   var arrayCarpetY = [12, 12, 12, 142, 142, 142, 271, 271, 271];
-  var arrayRecursive = [0, 1, 1, 9, 9];
+  var arrayRecursive = [0, 1, 1, 9, 81];
 
   var i = 0;
   var sierpinskiCarpet;
@@ -28,7 +29,7 @@
       this.width = widthsquare,
       this.height = widthsquare,
       this.render = function () {
-        cnv.fillStyle = "#1957A3";
+        cnv.fillStyle = carpetColors[iteration];//"#1957A3";
         cnv.fillRect(this.positionX, this.positionY, this.width, this.height);
 
         cnv.lineWidth = defaultLineWidth;
@@ -466,8 +467,12 @@
       var pieceCarpet = colectionCarpet[c];
       cnv.fillStyle = "white";
       pieceCarpet.render();
-      //console.log(pieceCarpet);
     }
+
+    cnv.font = "26px Arial Bold";
+    var textInfo = "ITERATION : "+iteration;
+    cnv.fillStyle = "white";
+    cnv.fillText(textInfo, 90, 435);
   };
 
   //RECURSIVE / LOOP 
